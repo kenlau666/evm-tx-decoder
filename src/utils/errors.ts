@@ -1,15 +1,7 @@
-import type { DecodeErrorCode } from '@/types';
+import { DecodeError } from '@/types';
 
-export class DecodeError extends Error {
-  constructor(
-    message: string,
-    public readonly code: DecodeErrorCode,
-    public readonly details?: Record<string, unknown>
-  ) {
-    super(message);
-    this.name = 'DecodeError';
-  }
-}
+// Re-export DecodeError from types
+export { DecodeError };
 
 export function getErrorMessage(error: unknown): string {
   if (error instanceof DecodeError) {
