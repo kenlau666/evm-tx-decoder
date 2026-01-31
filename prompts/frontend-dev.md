@@ -69,16 +69,16 @@ Create mocks that match API contracts exactly:
 ```typescript
 // src/api/mock/tasks.ts
 
-import { Task, CreateTaskInput, TaskFilters } from "@/types/api";
+import { Task, CreateTaskInput, TaskFilters } from '@/types/api';
 
 // Mock data
 const mockTasks: Task[] = [
   {
-    id: "1",
-    title: "Sample Task",
-    description: "This is a mock task",
-    status: "todo",
-    priority: "medium",
+    id: '1',
+    title: 'Sample Task',
+    description: 'This is a mock task',
+    status: 'todo',
+    priority: 'medium',
     assigneeId: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
@@ -110,8 +110,8 @@ export const mockTasksApi = {
     const newTask: Task = {
       id: String(Date.now()),
       ...input,
-      status: "todo",
-      priority: input.priority || "medium",
+      status: 'todo',
+      priority: input.priority || 'medium',
       assigneeId: input.assigneeId || null,
       description: input.description || null,
       createdAt: new Date().toISOString(),
@@ -127,7 +127,7 @@ export const mockTasksApi = {
     if (index === -1) {
       throw {
         success: false,
-        error: { code: "NOT_FOUND", message: "Task not found" },
+        error: { code: 'NOT_FOUND', message: 'Task not found' },
       };
     }
     mockTasks[index] = {
@@ -144,7 +144,7 @@ export const mockTasksApi = {
     if (index === -1) {
       throw {
         success: false,
-        error: { code: "NOT_FOUND", message: "Task not found" },
+        error: { code: 'NOT_FOUND', message: 'Task not found' },
       };
     }
     mockTasks.splice(index, 1);
@@ -158,11 +158,11 @@ export const mockTasksApi = {
 ```typescript
 // src/api/client.ts
 
-import { mockTasksApi } from "./mock/tasks";
-import { realTasksApi } from "./real/tasks";
+import { mockTasksApi } from './mock/tasks';
+import { realTasksApi } from './real/tasks';
 
 // Toggle this when backend is ready
-const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === "true";
+const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK === 'true';
 
 export const tasksApi = USE_MOCK ? mockTasksApi : realTasksApi;
 ```
@@ -439,3 +439,44 @@ Plan:
 
 Starting with mock API setup...
 ```
+
+---
+
+## SCOPE RULES (CRITICAL)
+
+### Do ONLY What's in the Issue
+
+- Implement EXACTLY what the issue describes
+- Do NOT add "nice to have" features
+- Do NOT build components for future issues
+- Do NOT add utilities "we might need later"
+- Do NOT refactor existing code unless asked
+
+### When In Doubt
+
+- ASK before adding anything not in the issue
+- Say: "Issue doesn't mention X. Should I add it or skip?"
+- Default answer is SKIP
+
+### PR Size Limits
+
+- Setup/config PRs: < 20 files
+- Feature PRs: < 10 files
+- If PR exceeds this, you're probably out of scope
+
+### What "Done" Means
+
+- Issue requirements met
+- Nothing more
+- Nothing less
+
+### Examples
+
+❌ BAD: "I added a Loading component since we'll need it later"
+✅ GOOD: "Issue #3 doesn't mention loading states. Should I add them?"
+
+❌ BAD: "Created 5 utility functions for future use"
+✅ GOOD: "Created only the validation function needed for this issue"
+
+❌ BAD: PR with 57 files for a setup task
+✅ GOOD: PR with minimum files to complete the issue

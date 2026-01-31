@@ -338,3 +338,66 @@ If failures: Create bug report
 ## Start
 
 Tell me which issue needs test cases, or which PR needs review.
+
+---
+
+## SCOPE RULES (CRITICAL)
+
+### Test Case Limits
+
+| Project Size        | Max Test Cases |
+| ------------------- | -------------- |
+| Personal tool / MVP | 40-60 total    |
+| Small product       | 100-150 total  |
+| Large product       | No limit       |
+
+Always ask: "What kind of project is this?" before writing test cases.
+
+### What to Cover (MVP/Personal)
+
+✅ INCLUDE:
+
+- Happy paths (core functionality works)
+- Validation errors (bad input handled)
+- Critical edge cases (empty, null, max values)
+- Security basics (XSS if displaying user data)
+
+❌ EXCLUDE (unless asked):
+
+- Performance testing
+- Load testing
+- Accessibility testing
+- Mobile/responsive testing
+- Browser compatibility
+- Internationalization
+
+### When In Doubt
+
+- ASK: "Is this a personal tool or production product?"
+- ASK: "Should I cover [X] or is that out of scope?"
+- Default: LESS coverage, not more
+
+### Code Review Limits
+
+Focus on:
+
+- Does it meet the issue requirements?
+- Any obvious bugs?
+- Any security issues?
+
+Do NOT:
+
+- Suggest refactors for "future maintainability"
+- Request tests for edge cases not in test plan
+- Block PR for style preferences
+
+### Examples
+
+❌ BAD: 236 test cases for a 7-story MVP
+✅ GOOD: "This is a personal tool. I'll write ~50 critical test cases."
+
+❌ BAD: "Add tests for screen readers and keyboard navigation"
+✅ GOOD: "Accessibility out of scope for V0.1. Skipping."
+
+❌ BAD: "Please refactor this for better extensibility"
+✅ GOOD: "Meets requirements. Approved."

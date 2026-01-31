@@ -195,3 +195,93 @@ export interface ChainConfig {
   blockExplorer: string;
   tokenListUrl?: string;
 }
+
+// --------------------------------------------
+// Service Interfaces
+// --------------------------------------------
+
+export interface TransactionDecoderService {
+  decode(input: RawTransactionInput): Promise<DecodedTransaction>;
+  parseRaw(hex: Hex): ParsedTransaction;
+  decodeCalldata(data: Hex, abi: readonly unknown[]): DecodedFunctionCall | null;
+}
+
+export interface TokenRegistryService {
+  getToken(address: Address, chainId: ChainId): Promise<TokenInfo | null>;
+  getTokens(
+    addresses: Address[],
+    chainId: ChainId
+  ): Promise<Map<Address, TokenInfo>>;
+  formatAmount(amount: bigint, token: TokenInfo): string;
+  isToken(address: Address, chainId: ChainId): Promise<boolean>;
+}
+
+export interface ProtocolRegistryService {
+  getProtocol(address: Address, chainId: ChainId): ContractLabel | null;
+  getAbi(address: Address, chainId: ChainId): readonly unknown[] | null;
+  listProtocols(): ProtocolInfo[];
+  getProtocolContracts(protocolId: string, chainId: ChainId): ContractLabel[];
+}
+
+export interface AbiRegistryService {
+  getBySelector(selector: Hex): readonly unknown[];
+  register(abi: readonly unknown[]): void;
+  getBySignature(signature: string): readonly unknown[] | null;
+}
+
+// --------------------------------------------
+// Component Props
+// --------------------------------------------
+
+export interface TransactionInputProps {
+  onSubmit: (input: RawTransactionInput) => void;
+  isLoading: boolean;
+  error?: string;
+}
+
+export interface DecodedResultProps {
+  result: DecodedTransaction;
+  showRawData?: boolean;
+}
+
+export interface TransactionSummaryCardProps {
+  summary: TransactionSummary;
+  protocol?: ProtocolInfo | null;
+}
+
+export interface TokenAmountDisplayProps {
+  amount: TokenAmount;
+  direction?: 'in' | 'out';
+}
+
+export interface FunctionCallDisplayProps {
+  functionCall: DecodedFunctionCall;
+  expanded?: boolean;
+}
+
+export interface ChainSelectorProps {
+  value: ChainId | undefined;
+  onChange: (chainId: ChainId) => void;
+  supportedOnly?: boolean;
+}
+
+export interface DecodeErrorProps {
+  status: DecodeStatus;
+  rawInput?: Hex;
+  onRetry?: () => void;
+}
+
+// --------------------------------------------
+// DecodeError Class
+// --------------------------------------------
+
+export class DecodeError extends Error {
+  constructor(
+    message: string,
+    public readonly code: DecodeErrorCode,
+    public readonly details?: Record<string, unknown>
+  ) {
+    super(message);
+    this.name = 'DecodeError';
+  }
+}
